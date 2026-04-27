@@ -1,0 +1,10 @@
+{
+  "name": "scouts-authentication-and-authorization",
+  "version": "1.0.0",
+  "description": "Self-contained Scouts authentication and authorization service.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node tests/auth-system.test.js"
+  }
+}
