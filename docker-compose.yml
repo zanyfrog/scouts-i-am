@@ -1,0 +1,15 @@
+services:
+  scouts-auth:
+    build: .
+    image: scouts-authentication-and-authorization:latest
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      PORT: 3000
+      DATA_FILE: /data/store.json
+    volumes:
+      - scouts-auth-data:/data
+    restart: unless-stopped
+
+volumes:
+  scouts-auth-data:

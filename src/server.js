@@ -7,7 +7,7 @@ const { ROLES } = require("./constants");
 const { JsonStore } = require("./json-store");
 const { syncLocalDemoAccounts } = require("./local-demo-sync");
 
-const dataFile = path.join(__dirname, "..", "data", "store.json");
+const dataFile = process.env.DATA_FILE || path.join(__dirname, "..", "data", "store.json");
 const authSystem = new AuthSystem(new JsonStore(dataFile));
 syncLocalDemoAccounts(authSystem);
 

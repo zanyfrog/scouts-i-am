@@ -22,6 +22,35 @@ npm start
 
 The service starts on `http://localhost:3000` by default.
 
+## Docker deployment
+
+Build and run the service with Docker Compose:
+
+```bash
+docker compose up --build -d
+```
+
+The container publishes `http://localhost:3000` and persists authentication data in the `scouts-auth-data` Docker volume. To use a different host port:
+
+```bash
+PORT=8080 docker compose up --build -d
+```
+
+Useful deployment commands:
+
+```bash
+docker compose ps
+docker compose logs -f scouts-auth
+docker compose down
+```
+
+For a direct Docker run without Compose:
+
+```bash
+docker build -t scouts-authentication-and-authorization .
+docker run -d --name scouts-auth -p 3000:3000 -v scouts-auth-data:/data scouts-authentication-and-authorization
+```
+
 ## Suggested bootstrap flow
 
 1. `POST /bootstrap/admin`
