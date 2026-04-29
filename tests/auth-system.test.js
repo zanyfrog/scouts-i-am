@@ -6,7 +6,7 @@ const path = require("node:path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const { AuthSystem } = require("../src/auth-system");
-const { ROLES } = require("../src/constants");
+const { FIELD_SCOPES, PERMISSIONS, POSITIONS, ROLES } = require("../src/constants");
 const { JsonStore } = require("../src/json-store");
 const { syncLocalDemoAccounts } = require("../src/local-demo-sync");
 const { generateTotp } = require("../src/security");
@@ -485,5 +485,248 @@ test("inactive troop members keep accounts but lose access", () => {
         password: "inactive-pass"
       }),
     /inactive/
+  );
+});
+
+test("same email can have isolated accounts in different units", () => {
+  const system = createSystem();
+  const unitA = system.createUnit({ name: "Troop A" });
+  const unitB = system.createUnit({ name: "Troop B" });
+  const adultA = system.createPerson({
+    name: "Shared Adult A",
+    email: "shared@example.com",
+    type: "adult",
+    unitIds: [unitA.id]
+  });
+  const adultB = system.createPerson({
+    name: "Shared Adult B",
+    email: "shared@example.com",
+    type: "adult",
+    unitIds: [unitB.id]
+  });
+
+  const inviteA = system.inviteAccount({ personId: adultA.id, email: adultA.email });
+  const inviteB = system.inviteAccount({ personId: adultB.id, email: adultB.email });
+  system.activateInvitation({ token: inviteA.token, password: "shared-pass-a" });
+  system.activateInvitation({ token: inviteB.token, password: "shared-pass-b" });
+
+  assert.throws(
+    () => system.login({ email: "shared@example.com", password: "shared-pass-a" }),
+    /unitId/
+  );
+  assert.equal(
+    system.login({ email: "shared@example.com", unitId: unitA.id, password: "shared-pass-a" }).account.personId,
+    adultA.id
+  );
+  assert.equal(
+    system.login({ email: "shared@example.com", unitId: unitB.id, password: "shared-pass-b" }).account.personId,
+    adultB.id
+  );
+});
+
+test("permission checks protect linked and unrelated scout PII separately", () => {
+  const system = createSystem();
+  const { unit } = bootstrapAdmin(system);
+  const parent = system.createPerson({
+    name: "Permission Parent",
+    email: "permission-parent@example.com",
+    type: "adult",
+    unitIds: [unit.id]
+  });
+  const linkedScout = system.createPerson({
+    name: "Linked PII Scout",
+    email: "linked-pii@example.com",
+    type: "scout",
+    unitIds: [unit.id]
+  });
+  const otherScout = system.createPerson({
+    name: "Other PII Scout",
+    email: "other-pii@example.com",
+    type: "scout",
+    unitIds: [unit.id]
+  });
+  system.linkParentToScout({ adultPersonId: parent.id, scoutPersonId: linkedScout.id });
+  system.upsertScoutMedical({
+    scoutPersonId: linkedScout.id,
+    medicalNotes: "Private notes",
+    allergies: "Peanuts"
+  });
+  const invitation = system.inviteAccount({ personId: parent.id, email: parent.email });
+  system.activateInvitation({ token: invitation.token, password: "parent-permission-pass" });
+  const login = system.login({ email: parent.email, password: "parent-permission-pass" });
+
+  assert.equal(
+    system.authorize({
+      token: login.session.token,
+      permission: PERMISSIONS.EDIT_LINKED_SCOUT,
+      scoutPersonId: linkedScout.id,
+      fieldScope: FIELD_SCOPES.MEDICAL
+    }).authorized,
+    true
+  );
+  assert.equal(
+    system.authorize({
+      token: login.session.token,
+      permission: PERMISSIONS.VIEW_LINKED_SCOUT,
+      scoutPersonId: otherScout.id,
+      fieldScope: FIELD_SCOPES.MEDICAL
+    }).authorized,
+    false
+  );
+  assert.equal(
+    system.getScoutData({
+      token: login.session.token,
+      scoutPersonId: linkedScout.id,
+      fieldScope: FIELD_SCOPES.MEDICAL
+    }).allergies,
+    "Peanuts"
+  );
+  assert.equal(system.listAuditLogs().some((entry) => entry.action === "pii.read"), true);
+});
+
+test("patrol membership limits scout-to-scout messaging", () => {
+  const system = createSystem();
+  const { unit } = bootstrapAdmin(system);
+  const scoutA = system.createPerson({
+    name: "Messenger A",
+    email: "messenger-a@example.com",
+    type: "scout",
+    unitIds: [unit.id]
+  });
+  const scoutB = system.createPerson({
+    name: "Messenger B",
+    email: "messenger-b@example.com",
+    type: "scout",
+    unitIds: [unit.id]
+  });
+  const scoutC = system.createPerson({
+    name: "Messenger C",
+    email: "messenger-c@example.com",
+    type: "scout",
+    unitIds: [unit.id]
+  });
+  const patrol = system.createPatrol({ unitId: unit.id, name: "Eagle" });
+  system.assignPatrolMembership({ personId: scoutA.id, patrolId: patrol.id });
+  system.assignPatrolMembership({ personId: scoutB.id, patrolId: patrol.id });
+  const invitation = system.inviteAccount({ personId: scoutA.id, email: scoutA.email });
+  system.activateInvitation({ token: invitation.token, password: "scout-message-pass" });
+  const login = system.login({ email: scoutA.email, password: "scout-message-pass" });
+
+  assert.equal(
+    system.authorize({
+      token: login.session.token,
+      permission: PERMISSIONS.MESSAGING,
+      unitId: unit.id,
+      targetUserId: scoutB.id
+    }).authorized,
+    true
+  );
+  assert.equal(
+    system.authorize({
+      token: login.session.token,
+      permission: PERMISSIONS.MESSAGING,
+      unitId: unit.id,
+      targetUserId: scoutC.id
+    }).authorized,
+    false
+  );
+});
+
+test("role and position permissions match matrix-sensitive scopes", () => {
+  const system = createSystem();
+  const { unit } = bootstrapAdmin(system);
+  const leader = system.createPerson({
+    name: "Matrix Leader",
+    email: "matrix-leader@example.com",
+    type: "adult",
+    unitIds: [unit.id]
+  });
+  const committee = system.createPerson({
+    name: "Matrix Committee",
+    email: "matrix-committee@example.com",
+    type: "adult",
+    unitIds: [unit.id]
+  });
+  const scoutmaster = system.createPerson({
+    name: "Matrix Scoutmaster",
+    email: "matrix-scoutmaster@example.com",
+    type: "adult",
+    unitIds: [unit.id]
+  });
+  const quartermaster = system.createPerson({
+    name: "Matrix Quartermaster",
+    email: "matrix-quartermaster@example.com",
+    type: "adult",
+    unitIds: [unit.id]
+  });
+  const scout = system.createPerson({
+    name: "Matrix Scout",
+    email: "matrix-scout@example.com",
+    type: "scout",
+    unitIds: [unit.id]
+  });
+
+  system.assignUnitRole({ personId: leader.id, unitId: unit.id, role: ROLES.LEADER });
+  system.assignUnitRole({ personId: committee.id, unitId: unit.id, role: ROLES.COMMITTEE });
+  system.assignUnitPosition({ personId: scoutmaster.id, unitId: unit.id, position: POSITIONS.SCOUTMASTER });
+  system.assignUnitPosition({ personId: quartermaster.id, unitId: unit.id, position: POSITIONS.QUARTERMASTER });
+
+  for (const person of [leader, committee, scoutmaster, quartermaster]) {
+    const invitation = system.inviteAccount({ personId: person.id, email: person.email });
+    system.activateInvitation({ token: invitation.token, password: "matrix-pass" });
+  }
+
+  const leaderLogin = system.login({ email: leader.email, password: "matrix-pass" });
+  const committeeLogin = system.login({ email: committee.email, password: "matrix-pass" });
+  const scoutmasterLogin = system.login({ email: scoutmaster.email, password: "matrix-pass" });
+  const quartermasterLogin = system.login({ email: quartermaster.email, password: "matrix-pass" });
+
+  assert.equal(
+    system.authorize({
+      token: leaderLogin.session.token,
+      permission: PERMISSIONS.VIEW_ALL_SCOUTS,
+      unitId: unit.id,
+      scoutPersonId: scout.id,
+      fieldScope: FIELD_SCOPES.PROFILE
+    }).authorized,
+    true
+  );
+  assert.equal(
+    system.authorize({
+      token: leaderLogin.session.token,
+      permission: PERMISSIONS.VIEW_ALL_SCOUTS,
+      unitId: unit.id,
+      scoutPersonId: scout.id,
+      fieldScope: FIELD_SCOPES.MEDICAL
+    }).authorized,
+    false
+  );
+  assert.equal(
+    system.authorize({
+      token: committeeLogin.session.token,
+      permission: PERMISSIONS.MANAGE_UNIT,
+      unitId: unit.id
+    }).authorized,
+    true
+  );
+  assert.equal(
+    system.authorize({
+      token: scoutmasterLogin.session.token,
+      permission: PERMISSIONS.EDIT_ALL_SCOUTS,
+      unitId: unit.id,
+      scoutPersonId: scout.id,
+      fieldScope: FIELD_SCOPES.MEDICAL
+    }).authorized,
+    true
+  );
+  assert.equal(
+    system.authorize({
+      token: quartermasterLogin.session.token,
+      permission: PERMISSIONS.VIEW_ALL_SCOUTS,
+      unitId: unit.id,
+      scoutPersonId: scout.id,
+      fieldScope: FIELD_SCOPES.MEDICAL
+    }).authorized,
+    false
   );
 });

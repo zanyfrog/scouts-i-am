@@ -67,12 +67,15 @@ function ensureLocalAccount(authSystem, person, email) {
     return false;
   }
 
-  let account = authSystem.findAccountByEmail(normalizedEmail) || authSystem.findAccountByPersonId(person.id);
+  let account =
+    authSystem.findAccountByEmail(normalizedEmail, person.unitIds?.[0] || null, { allowAmbiguous: true }) ||
+    authSystem.findAccountByPersonId(person.id);
   if (!account) {
     const passwordRecord = hashPassword(LOCAL_DEMO_PASSWORD);
     account = {
       id: createId("acct"),
       personId: person.id,
+      unitIds: [...(person.unitIds || [])],
       email: normalizedEmail,
       passwordHash: passwordRecord.passwordHash,
       passwordSalt: passwordRecord.salt,
@@ -85,6 +88,7 @@ function ensureLocalAccount(authSystem, person, email) {
     authSystem.store.data.accounts.push(account);
   } else {
     account.personId = account.personId || person.id;
+    account.unitIds = [...new Set([...(account.unitIds || []), ...(person.unitIds || [])])];
     account.email = normalizedEmail;
     account.status = "active";
     account.mfaExempt = true;

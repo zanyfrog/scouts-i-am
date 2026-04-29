@@ -3,7 +3,7 @@
 const http = require("node:http");
 const path = require("node:path");
 const { AuthSystem } = require("./auth-system");
-const { ROLES } = require("./constants");
+const { PERMISSIONS, ROLES } = require("./constants");
 const { JsonStore } = require("./json-store");
 const { syncLocalDemoAccounts } = require("./local-demo-sync");
 
@@ -58,8 +58,11 @@ function requireAuthorization(request, response, allowedRoles, options = {}) {
   const result = authSystem.authorize({
     token: getBearerToken(request),
     allowedRoles,
+    permission: options.permission || null,
     unitId: options.unitId || null,
-    scoutPersonId: options.scoutPersonId || null
+    scoutPersonId: options.scoutPersonId || null,
+    targetUserId: options.targetUserId || null,
+    fieldScope: options.fieldScope || "profile"
   });
   if (!result.authorized) {
     sendJson(response, 403, { error: "Forbidden", actor: result.actor });
@@ -135,8 +138,11 @@ const server = http.createServer(async (request, response) => {
       return sendJson(response, 200, authSystem.authorize({
         token: getBearerToken(request),
         allowedRoles: body.allowedRoles || [ROLES.PUBLIC],
+        permission: body.permission || null,
         unitId: body.unitId || null,
-        scoutPersonId: body.scoutPersonId || null
+        scoutPersonId: body.scoutPersonId || null,
+        targetUserId: body.targetUserId || null,
+        fieldScope: body.fieldScope || "profile"
       }));
     }
 
@@ -190,6 +196,113 @@ const server = http.createServer(async (request, response) => {
         return;
       }
       return sendJson(response, 200, authSystem.removeUnitRole(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/positions/unit") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.assignUnitPosition(body));
+    }
+
+    if (request.method === "DELETE" && url.pathname === "/admin/positions/unit") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 200, authSystem.removeUnitPosition(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/permissions/roles") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.assignRolePermission(body));
+    }
+
+    if (request.method === "DELETE" && url.pathname === "/admin/permissions/roles") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 200, authSystem.removeRolePermission(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/permissions/positions") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.assignPositionPermission(body));
+    }
+
+    if (request.method === "DELETE" && url.pathname === "/admin/permissions/positions") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 200, authSystem.removePositionPermission(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/patrols") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.createPatrol(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/patrol-memberships") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.assignPatrolMembership(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/scout-profile") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.upsertScoutProfile(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/scout-medical") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.upsertScoutMedical(body));
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/scout-advancement") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 201, authSystem.upsertScoutAdvancement(body));
+    }
+
+    if (request.method === "GET" && url.pathname.startsWith("/scouts/")) {
+      const scoutPersonId = url.pathname.split("/")[2];
+      const fieldScope = url.searchParams.get("fieldScope") || "profile";
+      const actor = requireAuthorization(request, response, [], {
+        permission: PERMISSIONS.VIEW_LINKED_SCOUT,
+        scoutPersonId,
+        targetUserId: scoutPersonId,
+        fieldScope
+      });
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 200, authSystem.getScoutData({
+        token: getBearerToken(request),
+        scoutPersonId,
+        fieldScope
+      }));
     }
 
     if (request.method === "POST" && url.pathname === "/admin/roles/global") {
@@ -246,6 +359,14 @@ const server = http.createServer(async (request, response) => {
         return;
       }
       return sendJson(response, 200, authSystem.listAccounts());
+    }
+
+    if (request.method === "GET" && url.pathname === "/admin/audit-logs") {
+      const actor = requireAuthorization(request, response, [ROLES.ADMINISTRATOR]);
+      if (!actor) {
+        return;
+      }
+      return sendJson(response, 200, authSystem.listAuditLogs());
     }
 
     if (request.method === "GET" && url.pathname.startsWith("/admin/access/")) {
