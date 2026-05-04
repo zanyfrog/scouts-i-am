@@ -1093,6 +1093,56 @@
       "status": "active"
     }
   ],
+  "rolePermissions": [],
+  "positionPermissions": [],
+  "unitPositionAssignments": [],
+  "patrols": [],
+  "patrolMemberships": [],
+  "scoutProfiles": [],
+  "scoutMedical": [],
+  "scoutAdvancement": [],
+  "auditLogs": [
+    {
+      "id": "audit_2fe7edb9b7726f5a",
+      "actorUserId": "adult-1",
+      "action": "auth.login",
+      "targetType": "account",
+      "targetId": "acct_09b92ba1b1f2110a",
+      "timestamp": "2026-04-30T02:41:16.025Z",
+      "ipAddress": null,
+      "details": {}
+    },
+    {
+      "id": "audit_359e9645e194f1b7",
+      "actorUserId": "person_24fac5dfac08939a",
+      "action": "auth.login",
+      "targetType": "account",
+      "targetId": "acct_63a4ac1405da024e",
+      "timestamp": "2026-04-30T02:41:20.038Z",
+      "ipAddress": null,
+      "details": {}
+    },
+    {
+      "id": "audit_02e25eaee4fe07b7",
+      "actorUserId": "adult-1",
+      "action": "auth.login",
+      "targetType": "account",
+      "targetId": "acct_09b92ba1b1f2110a",
+      "timestamp": "2026-04-30T17:01:34.060Z",
+      "ipAddress": null,
+      "details": {}
+    },
+    {
+      "id": "audit_92d6aebcd14108cf",
+      "actorUserId": "adult-1",
+      "action": "auth.login",
+      "targetType": "account",
+      "targetId": "acct_09b92ba1b1f2110a",
+      "timestamp": "2026-05-01T01:05:08.701Z",
+      "ipAddress": null,
+      "details": {}
+    }
+  ],
   "accounts": [
     {
       "id": "acct_275e66fdcb8ae1b4",
@@ -1125,7 +1175,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:46.796Z"
+      "createdAt": "2026-04-27T02:19:46.796Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_641da36cf464268d",
@@ -1137,7 +1190,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:47.127Z"
+      "createdAt": "2026-04-27T02:19:47.127Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_813b55a0626437c9",
@@ -1149,7 +1205,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:47.393Z"
+      "createdAt": "2026-04-27T02:19:47.393Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_8cb26b1cff5d498f",
@@ -1161,7 +1220,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:47.896Z"
+      "createdAt": "2026-04-27T02:19:47.896Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_949d528134c649b7",
@@ -1173,7 +1235,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:48.356Z"
+      "createdAt": "2026-04-27T02:19:48.356Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_10e49a77519169f2",
@@ -1185,7 +1250,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:48.830Z"
+      "createdAt": "2026-04-27T02:19:48.830Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_5204499ed85941be",
@@ -1197,7 +1265,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:49.333Z"
+      "createdAt": "2026-04-27T02:19:49.333Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_550c965f526357e2",
@@ -1209,7 +1280,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:49.826Z"
+      "createdAt": "2026-04-27T02:19:49.826Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_ae26a28525e23d75",
@@ -1221,7 +1295,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:50.170Z"
+      "createdAt": "2026-04-27T02:19:50.170Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_bc0056e4eac69472",
@@ -1233,7 +1310,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:50.653Z"
+      "createdAt": "2026-04-27T02:19:50.653Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_dcc02d681622d70a",
@@ -1245,7 +1325,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:50.934Z"
+      "createdAt": "2026-04-27T02:19:50.934Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_eae234310f74ab34",
@@ -1257,7 +1340,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:51.221Z"
+      "createdAt": "2026-04-27T02:19:51.221Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_e977f47bea3c148e",
@@ -1269,7 +1355,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:51.615Z"
+      "createdAt": "2026-04-27T02:19:51.615Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_e4fd7a4a908b830a",
@@ -1281,7 +1370,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:52.193Z"
+      "createdAt": "2026-04-27T02:19:52.193Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_322992765fae74d3",
@@ -1293,7 +1385,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:52.722Z"
+      "createdAt": "2026-04-27T02:19:52.722Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_d5b93b4e77e69076",
@@ -1305,7 +1400,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:53.100Z"
+      "createdAt": "2026-04-27T02:19:53.100Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_0652fe9421822902",
@@ -1317,7 +1415,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:53.497Z"
+      "createdAt": "2026-04-27T02:19:53.497Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_9468c0b1a536faa9",
@@ -1329,7 +1430,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:53.864Z"
+      "createdAt": "2026-04-27T02:19:53.864Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_7589409e1c5486cd",
@@ -1341,7 +1445,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:54.169Z"
+      "createdAt": "2026-04-27T02:19:54.169Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_02f0491cfd596f0a",
@@ -1353,7 +1460,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:54.512Z"
+      "createdAt": "2026-04-27T02:19:54.512Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_9d59010af1dd8fed",
@@ -1365,7 +1475,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:54.858Z"
+      "createdAt": "2026-04-27T02:19:54.858Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_b2ff89204e0c883f",
@@ -1377,7 +1490,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:55.133Z"
+      "createdAt": "2026-04-27T02:19:55.133Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_5fd6e98738e0ecd9",
@@ -1389,7 +1505,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:55.730Z"
+      "createdAt": "2026-04-27T02:19:55.730Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_d664ee537587c70f",
@@ -1401,7 +1520,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:56.270Z"
+      "createdAt": "2026-04-27T02:19:56.270Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_de272e02697db659",
@@ -1413,7 +1535,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:56.882Z"
+      "createdAt": "2026-04-27T02:19:56.882Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_90e155f9be8e3173",
@@ -1425,7 +1550,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:57.591Z"
+      "createdAt": "2026-04-27T02:19:57.591Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_4c2b13de429c3e91",
@@ -1437,7 +1565,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:58.425Z"
+      "createdAt": "2026-04-27T02:19:58.425Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_683d44ad1417198f",
@@ -1449,7 +1580,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:59.193Z"
+      "createdAt": "2026-04-27T02:19:59.193Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_c3453bc80f417e47",
@@ -1461,7 +1595,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:19:59.955Z"
+      "createdAt": "2026-04-27T02:19:59.955Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_a3b618ff21b675d8",
@@ -1473,7 +1610,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:00.746Z"
+      "createdAt": "2026-04-27T02:20:00.746Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_2555991e25890603",
@@ -1485,7 +1625,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:01.551Z"
+      "createdAt": "2026-04-27T02:20:01.551Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_6057504ce974a0fa",
@@ -1497,7 +1640,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:02.299Z"
+      "createdAt": "2026-04-27T02:20:02.299Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_a833452f82273219",
@@ -1509,7 +1655,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:03.104Z"
+      "createdAt": "2026-04-27T02:20:03.104Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_7f0460aa235635e0",
@@ -1521,7 +1670,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:03.836Z"
+      "createdAt": "2026-04-27T02:20:03.836Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_ceea1e2d1536cf14",
@@ -1533,7 +1685,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:04.597Z"
+      "createdAt": "2026-04-27T02:20:04.597Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_bceaea1bb43893c0",
@@ -1545,7 +1700,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:05.435Z"
+      "createdAt": "2026-04-27T02:20:05.435Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_477a2939d1420461",
@@ -1557,7 +1715,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:06.263Z"
+      "createdAt": "2026-04-27T02:20:06.263Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_d334e0b224e23200",
@@ -1569,7 +1730,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:07.063Z"
+      "createdAt": "2026-04-27T02:20:07.063Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_a9e351f6dce1521b",
@@ -1581,7 +1745,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:07.813Z"
+      "createdAt": "2026-04-27T02:20:07.813Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_82eab5b848c7fab7",
@@ -1593,7 +1760,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:08.374Z"
+      "createdAt": "2026-04-27T02:20:08.374Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_16ec4caad70ff801",
@@ -1605,7 +1775,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:08.812Z"
+      "createdAt": "2026-04-27T02:20:08.812Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     },
     {
       "id": "acct_f9d0b2075d21c8b2",
@@ -1617,7 +1790,10 @@
       "mfaSecret": null,
       "mfaExempt": true,
       "localDemoAccount": true,
-      "createdAt": "2026-04-27T02:20:09.177Z"
+      "createdAt": "2026-04-27T02:20:09.177Z",
+      "unitIds": [
+        "unit_442da8adde28cbf4"
+      ]
     }
   ],
   "invitations": [
@@ -1845,6 +2021,66 @@
       "accountId": "acct_09b92ba1b1f2110a",
       "createdAt": "2026-04-27T03:19:16.975Z",
       "expiresAt": "2026-04-27T11:19:16.975Z",
+      "status": "active"
+    },
+    {
+      "id": "sess_a8c4c5d1ba25acf5",
+      "token": "8e1c6615ca499dc3e98359f0c9e6af6a8e1f83a9ae68001d",
+      "accountId": "acct_63a4ac1405da024e",
+      "createdAt": "2026-04-29T21:28:35.290Z",
+      "expiresAt": "2026-04-30T05:28:35.290Z",
+      "status": "active"
+    },
+    {
+      "id": "sess_0bc382e3c5cb572c",
+      "token": "53df88aa902b24ccf6e336a645c5d903f3805d99d81e194e",
+      "accountId": "acct_63a4ac1405da024e",
+      "createdAt": "2026-04-29T23:25:31.418Z",
+      "expiresAt": "2026-04-30T07:25:31.418Z",
+      "status": "active"
+    },
+    {
+      "id": "sess_c6dcc0b0305fc7f3",
+      "token": "c14d9bc31fecf81c0d7e6c69c47295918797d9becfae4f66",
+      "accountId": "acct_63a4ac1405da024e",
+      "createdAt": "2026-04-30T01:05:06.143Z",
+      "expiresAt": "2026-04-30T09:05:06.143Z",
+      "status": "active"
+    },
+    {
+      "id": "sess_835756dac908cfb1",
+      "token": "a5d62844b1eaf63fd1d7700b908519ef27f8812b866f4a54",
+      "accountId": "acct_09b92ba1b1f2110a",
+      "unitId": "unit_442da8adde28cbf4",
+      "createdAt": "2026-04-30T02:41:15.999Z",
+      "expiresAt": "2026-04-30T10:41:16.024Z",
+      "status": "active"
+    },
+    {
+      "id": "sess_61a472c85f6da7e3",
+      "token": "f01c10903dc9f85aeb36417b7b99cccecceadcf90a2e2ec7",
+      "accountId": "acct_63a4ac1405da024e",
+      "unitId": null,
+      "createdAt": "2026-04-30T02:41:20.038Z",
+      "expiresAt": "2026-04-30T10:41:20.038Z",
+      "status": "active"
+    },
+    {
+      "id": "sess_1bf62f7ad2ad222a",
+      "token": "0de0fd73c930e4bbf3461f8dd1fe17f43e014565aafefd99",
+      "accountId": "acct_09b92ba1b1f2110a",
+      "unitId": "unit_442da8adde28cbf4",
+      "createdAt": "2026-04-30T17:01:34.059Z",
+      "expiresAt": "2026-05-01T01:01:34.059Z",
+      "status": "active"
+    },
+    {
+      "id": "sess_4a89ae61f6300372",
+      "token": "5640965da200213392a88baf2d6bfb7a477d06beef167a97",
+      "accountId": "acct_09b92ba1b1f2110a",
+      "unitId": "unit_442da8adde28cbf4",
+      "createdAt": "2026-05-01T01:05:08.699Z",
+      "expiresAt": "2026-05-01T09:05:08.699Z",
       "status": "active"
     }
   ]

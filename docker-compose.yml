@@ -1,6 +1,8 @@
 services:
   scouts-auth:
-    build: .
+    build:
+      context: ..
+      dockerfile: ./scouts-i-am/Dockerfile
     image: scouts-authentication-and-authorization:latest
     ports:
       - "${PORT:-3000}:3000"

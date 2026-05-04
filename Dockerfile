@@ -2,15 +2,16 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json ./
-COPY src ./src
+COPY scouts-i-am/package.json ./
+COPY scouts-i-am/src ./src
+COPY scouts.orm /scouts.orm
 
 ENV PORT=3000
 ENV DATA_FILE=/data/store.json
 
 EXPOSE 3000
 
-RUN mkdir -p /data && chown -R node:node /app /data
+RUN mkdir -p /data && chown -R node:node /app /data /scouts.orm
 
 USER node
 
