@@ -160,9 +160,9 @@ test("passwordless login is available only when explicitly allowed", () => {
   assert.equal(login.account.email, "passwordless-parent@example.com");
 });
 
-test("local demo sync creates accounts for scout and adult emails", () => {
+test("local demo sync creates accounts for scout and adult emails", async () => {
   const system = createSystem();
-  const result = syncLocalDemoAccounts(system, {
+  const result = await syncLocalDemoAccounts(system, {
     scouts: [
       {
         id: "demo-scout-1",

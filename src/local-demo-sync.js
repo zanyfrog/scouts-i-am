@@ -1,22 +1,27 @@
 "use strict";
 
-const path = require("node:path");
 const { PERSON_TYPES, ROLES } = require("./constants");
 const { createId, hashPassword } = require("./security");
 
 const LOCAL_DEMO_PASSWORD = "local-demo-password";
+const ormBaseUrl = String(process.env.ORM_BASE_URL || "http://127.0.0.1:4175").replace(/\/+$/, "");
+const internalServiceToken = String(process.env.INTERNAL_SERVICE_TOKEN || "scouts-internal-service");
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
 }
 
-function loadOrmData() {
+async function loadOrmData() {
   try {
-    const orm = require(path.join(__dirname, "..", "..", "scouts.orm"));
-    if (typeof orm.ensureDataFiles === "function") {
-      orm.ensureDataFiles();
+    const response = await fetch(`${ormBaseUrl}/api/auth-sync-data`, {
+      headers: {
+        "X-Internal-Service-Token": internalServiceToken,
+      },
+    });
+    if (!response.ok) {
+      return null;
     }
-    return typeof orm.getDataPayload === "function" ? orm.getDataPayload() : null;
+    return response.json();
   } catch (error) {
     return null;
   }
@@ -100,23 +105,24 @@ function ensureLocalAccount(authSystem, person, email) {
   return true;
 }
 
-function syncLocalDemoAccounts(authSystem, data = loadOrmData()) {
-  if (!data) {
+async function syncLocalDemoAccounts(authSystem, data) {
+  const sourceData = data || await loadOrmData();
+  if (!sourceData) {
     return { synced: false, adults: 0, scouts: 0, accounts: 0 };
   }
 
   const unit = getOrCreateUnit(authSystem);
-  const scouts = Array.isArray(data.scouts) ? data.scouts : [];
-  const adults = Array.isArray(data.adults) ? data.adults : [];
+  const scouts = Array.isArray(sourceData.scouts) ? sourceData.scouts : [];
+  const adults = Array.isArray(sourceData.adults) ? sourceData.adults : [];
   const adultLeaders = new Set(
-    (Array.isArray(data.adultLeaders) ? data.adultLeaders : []).map((leader) => leader.adultId)
+    (Array.isArray(sourceData.adultLeaders) ? sourceData.adultLeaders : []).map((leader) => leader.adultId)
   );
   let accountCount = 0;
 
   scouts.forEach((scout) => {
     const person = ensurePerson(authSystem, {
       id: scout.id,
-      name: scout.name || [scout.firstName, scout.lastName].filter(Boolean).join(" "),
+      name: scout.name,
       email: scout.email,
       type: PERSON_TYPES.SCOUT,
       unitId: unit.id
@@ -146,7 +152,7 @@ function syncLocalDemoAccounts(authSystem, data = loadOrmData()) {
     }
   });
 
-  (Array.isArray(data.adultScoutRelationships) ? data.adultScoutRelationships : []).forEach((relationship) => {
+  (Array.isArray(sourceData.adultScoutRelationships) ? sourceData.adultScoutRelationships : []).forEach((relationship) => {
     const adult = authSystem.store.data.people.find((person) => person.id === relationship.adultId);
     const scout = authSystem.store.data.people.find((person) => person.id === relationship.scoutId);
     if (adult && scout) {
@@ -167,5 +173,6 @@ function syncLocalDemoAccounts(authSystem, data = loadOrmData()) {
 }
 
 module.exports = {
+  loadOrmData,
   syncLocalDemoAccounts
 };

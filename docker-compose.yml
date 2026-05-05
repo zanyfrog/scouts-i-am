@@ -9,6 +9,8 @@ services:
     environment:
       PORT: 3000
       DATA_FILE: /data/store.json
+      ORM_BASE_URL: "${ORM_BASE_URL:-http://host.docker.internal:4175}"
+      INTERNAL_SERVICE_TOKEN: "${INTERNAL_SERVICE_TOKEN:-scouts-internal-service}"
     volumes:
       - scouts-auth-data:/data
     restart: unless-stopped

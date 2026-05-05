@@ -4,14 +4,15 @@ WORKDIR /app
 
 COPY scouts-i-am/package.json ./
 COPY scouts-i-am/src ./src
-COPY scouts.orm /scouts.orm
 
 ENV PORT=3000
 ENV DATA_FILE=/data/store.json
+ENV ORM_BASE_URL=http://127.0.0.1:4175
+ENV INTERNAL_SERVICE_TOKEN=scouts-internal-service
 
 EXPOSE 3000
 
-RUN mkdir -p /data && chown -R node:node /app /data /scouts.orm
+RUN mkdir -p /data && chown -R node:node /app /data
 
 USER node
 

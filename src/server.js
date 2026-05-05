@@ -9,7 +9,7 @@ const { syncLocalDemoAccounts } = require("./local-demo-sync");
 
 const dataFile = process.env.DATA_FILE || path.join(__dirname, "..", "data", "store.json");
 const authSystem = new AuthSystem(new JsonStore(dataFile));
-syncLocalDemoAccounts(authSystem);
+syncLocalDemoAccounts(authSystem).catch(() => {});
 
 function sendJson(response, statusCode, payload) {
   response.writeHead(statusCode, { "Content-Type": "application/json" });
@@ -126,7 +126,7 @@ const server = http.createServer(async (request, response) => {
     if (request.method === "POST" && url.pathname === "/auth/login") {
       const allowPasswordless = isLocalDemoLogin(request) && !body.password;
       if (allowPasswordless) {
-        syncLocalDemoAccounts(authSystem);
+        await syncLocalDemoAccounts(authSystem);
       }
       return sendJson(response, 200, authSystem.login({
         ...body,
